@@ -17,17 +17,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     game.cpp \
+    gamephysobject.cpp \
+    gameship.cpp \
     main.cpp \
-    mainwindow.cpp \
-    testobject.cpp
+    mainwindow.cpp
 
 HEADERS += \
     game.h \
-    mainwindow.h \
-    testobject.h
+    gamephysobject.h \
+    gameship.h \
+    mainwindow.h
 
 FORMS += \
     mainwindow.ui
+
+QMAKE_LFLAGS += -static
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

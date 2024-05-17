@@ -10,6 +10,9 @@
 #include <QSizePolicy>
 #include <QLayout>
 
+#include <gamephysobject.h>
+#include <gameship.h>
+
 class Game : public QWidget
 {
     Q_OBJECT
@@ -18,8 +21,14 @@ private:
     QTimer* p_mainTimer;
     QGraphicsScene* p_mainScene;
     QGraphicsView* p_mainView;
+    GameShip* p_testShip;
+    GameShip* p_testShip2;
 
-
+    void InitLayout();
+    void InitGraphics();
+    void InitTimer();
+    void Update();
+    void InitInput();
 protected:
 
     virtual void keyPressEvent(QKeyEvent *event) override;
@@ -28,7 +37,7 @@ protected:
 
 public:
     explicit Game(QWidget *parent = nullptr);
-
+    QGraphicsView* View();
 
 
 

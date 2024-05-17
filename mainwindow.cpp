@@ -6,11 +6,13 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    p_game = new Game();
-    //p_game->resize(50,50);
-    setLayout(new QGridLayout(this));
-    this->layout()->addWidget(p_game);
-    p_game->setSizePolicy(QSizePolicy(QSizePolicy::Maximum,QSizePolicy::Maximum));
+
+    p_game = new Game(this);
+    QGridLayout* gl = new QGridLayout(this);
+    centralWidget()->setLayout(gl);
+    gl->addWidget(p_game, 0, 0, 1, 1);
+
+
 }
 
 MainWindow::~MainWindow()
