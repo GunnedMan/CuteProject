@@ -16,9 +16,10 @@ GamePhysObject::GamePhysObject(QObject *parent) : QObject(parent)
 
 void GamePhysObject::UpdateGame(int ticks)
 {
+    if(m_velocityLinear.lengthSquared() > MaxVelocitySquared)
+        m_velocityLinear = m_velocityLinear.normalized() * MaxVelocitySquared;
     QPointF p = pos();
-    p.setX(p.x() + m_velocityLinear.x() * ticks);
-    p.setY(p.y() + m_velocityLinear.y() * ticks);
+    p += m_velocityLinear.toPointF() * ticks;
     setPos(p);
     setRotation(rotation()+m_velocityAngular * ticks);
 }
@@ -39,11 +40,14 @@ void GamePhysObject::ApplyImpulseG(QVector2D impulse, QPointF globalPoint)
     QVector2D vectorToLocalCenter = QVector2D(globalPoint - pos());
     QVector3D vectorMult = QVector3D::crossProduct(vectorToLocalCenter, impulse);
     ApplyImpulseRot(vectorMult.z());
+    //qDebug()<<QString("impulse: %1, %2").arg(impulse.x()).arg(impulse.y());
 }
 
 void GamePhysObject::ApplyImpulseL(QVector2D impulse, QPointF localPoint)
 {
-    ApplyImpulseG(QVector2D(mapToScene(impulse.toPointF()) - pos()), mapToScene(localPoint));
+    QVector2D mappedImpulse = QVector2D(mapToScene(impulse.toPointF()) - pos());
+    //qDebug()<<QString("mappedImpulse: %1, %2").arg(mappedImpulse.x()).arg(mappedImpulse.y());
+    ApplyImpulseG(mappedImpulse, mapToScene(localPoint));
 }
 
 void GamePhysObject::ApplyImpulseLin(QVector2D impulse)
@@ -82,7 +86,7 @@ qreal GamePhysObject::radius()
 
 void GamePhysObject::setRadius(qreal radius)
 {
-    if(m_radius > 0)
+    if(radius > 0)
     {
         m_radius = radius;
         SetPhysix(m_mass, m_radius);
@@ -98,10 +102,19 @@ void GamePhysObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
+
     painter->drawPolygon(*p_grafixDummy);
 }
 
 void GamePhysObject::SetPhysix(qreal mass, qreal radius)
 {
+    if(mass > 0)
+        m_mass = mass;
+    else
+        m_mass = 10;
+    if(radius > 0)
+        m_radius = radius;
+    else
+        m_radius = 10;
     m_massAngular = mass * radius * radius * 0.5; //cylinder formula
 }

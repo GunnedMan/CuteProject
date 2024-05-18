@@ -9,28 +9,27 @@
 #include <QPushButton>
 #include <QSizePolicy>
 #include <QLayout>
+#include <QTime>
+#include <QDateTime>
+#include <QtDebug>
+
 
 #include <gamephysobject.h>
 #include <gameship.h>
+#include <inputhandler.h>
 
 class Game : public QWidget
 {
     Q_OBJECT
 
 private:
-    QTimer* p_mainTimer;
-    QGraphicsScene* p_mainScene;
-    QGraphicsView* p_mainView;
-    GameShip* p_testShip;
-    GameShip* p_testShip2;
-
     void InitLayout();
     void InitGraphics();
     void InitTimer();
     void Update();
     void InitInput();
-protected:
 
+protected:
     virtual void keyPressEvent(QKeyEvent *event) override;
     virtual void keyReleaseEvent(QKeyEvent *event) override;
 
@@ -40,6 +39,17 @@ public:
     QGraphicsView* View();
 
 
+
+
+
+private:
+    QTimer* p_mainTimer;
+    InputHandler* inputHandler;
+    QGraphicsScene* p_mainScene;
+    QGraphicsView* p_mainView;
+    GameShip* p_testShip;
+    GameShip* p_testShip2;
+    quint64 m_lastMSec;
 
 
 

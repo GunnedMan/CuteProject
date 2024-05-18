@@ -9,6 +9,7 @@
 #include <QtMath>
 #include <QVector2D>
 #include <QVector3D>
+#include <QtDebug>
 
 class GamePhysObject : public QObject, public QGraphicsItem
 {
@@ -40,6 +41,8 @@ protected:
 
 
 private:
+    const qreal MaxVelocity = 1000;
+    const qreal MaxVelocitySquared = MaxVelocity * MaxVelocity;
     QVector<QPointF>* p_grafixDummy;
 protected:
     //QGraphicsItem

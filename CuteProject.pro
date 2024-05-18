@@ -19,6 +19,7 @@ SOURCES += \
     game.cpp \
     gamephysobject.cpp \
     gameship.cpp \
+    inputhandler.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -26,6 +27,7 @@ HEADERS += \
     game.h \
     gamephysobject.h \
     gameship.h \
+    inputhandler.h \
     mainwindow.h
 
 FORMS += \

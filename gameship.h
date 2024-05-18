@@ -2,8 +2,9 @@
 #define GAMESHIP_H
 
 #include <QObject>
+#include <QtDebug>
 #include <gamephysobject.h>
-
+#include <inputhandler.h>
 
 class GameShip : public GamePhysObject
 {
@@ -16,15 +17,27 @@ public:
     void SetThrustLat(qreal value);
     void SetThrustRot(qreal value);
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    void SetInput(InputHandler* input);
 
+private:
+    void UpdateInput(int ticks);
+    void UpdateThrust(int ticks);
 
 protected:
     //ship
-    qreal m_thrust;
+    InputHandler* m_input;
+
+private:
+    const int TicksToMaxThrust = 500;
+    qreal m_maxThrustMain;
+    qreal m_maxThrustLat;
+    qreal m_maxThrustRot;
+
+    qreal m_thrustMain;
     qreal m_thrustLat;
-
-
-
+    qreal m_thrustRot;
+    
+    
 };
 
 #endif // GAMESHIP_H
