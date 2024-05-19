@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     QGridLayout* gl = new QGridLayout(this);
     centralWidget()->setLayout(gl);
     gl->addWidget(p_game, 0, 0, 1, 1);
-
+    gl->setMargin(0);
 
 }
 

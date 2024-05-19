@@ -14,7 +14,7 @@
 #include <QtDebug>
 
 
-#include <gamephysobject.h>
+#include <gmphysicalobject.h>
 #include <gameship.h>
 #include <inputhandler.h>
 

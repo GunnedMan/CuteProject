@@ -3,16 +3,19 @@
 
 #include <QObject>
 #include <QtDebug>
-#include <gamephysobject.h>
+#include <QVariantAnimation>
+#include <QEasingCurve>
+
+#include <gmphysicalobject.h>
 #include <inputhandler.h>
 
-class GameShip : public GamePhysObject
+class GameShip : public GmPhysicalObject
 {
     Q_OBJECT
 
 public:
     GameShip(QObject *parent = nullptr);
-    void UpdateGame(int ticks = 1) override;
+    void updateGame(int ticks = 1) override;
     void SetThrustMain(qreal value);
     void SetThrustLat(qreal value);
     void SetThrustRot(qreal value);

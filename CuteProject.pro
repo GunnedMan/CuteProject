@@ -17,16 +17,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     game.cpp \
-    gamephysobject.cpp \
     gameship.cpp \
+    gmgrafix.cpp \
+    gmphysicalobject.cpp \
     inputhandler.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     game.h \
-    gamephysobject.h \
     gameship.h \
+    gmgrafix.h \
+    gmphysicalobject.h \
     inputhandler.h \
     mainwindow.h
 

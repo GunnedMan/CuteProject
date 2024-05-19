@@ -12,9 +12,9 @@ void Game::InitLayout()
 void Game::InitGraphics()
 {
     p_mainView->setScene(p_mainScene);
-    //p_mainView->fitInView(QRectF(-50, -50, 100, 100));
     p_mainView->setRenderHint(QPainter::Antialiasing, true);
     p_mainView->scale(1,1);
+    p_mainView->setRenderHint(QPainter::RenderHint::HighQualityAntialiasing,true);
 }
 
 void Game::InitInput()
@@ -24,14 +24,13 @@ void Game::InitInput()
 
 void Game::InitTimer()
 {
-    p_mainTimer->setInterval(1000/60);
+    p_mainTimer->setInterval(1000/60);//60 fps
     connect(p_mainTimer, &QTimer::timeout, this, &Game::Update);
     p_mainTimer->start();
 }
 
 void Game::Update()
 {
-    p_mainTimer->blockSignals(true);
     //time
     quint64 currentMSec = QDateTime::currentDateTime().toMSecsSinceEpoch();
     quint64 mSecElapsed = currentMSec - m_lastMSec;
@@ -44,15 +43,13 @@ void Game::Update()
     //input
     inputHandler->UpdateGame(mSecElapsed);
 
+
+
     //objects
-    p_testShip->UpdateGame(mSecElapsed);
-    p_testShip2->UpdateGame(mSecElapsed);
-    //p_mainView->centerOn(p_testShip->pos() + p_testShip->velocityLin().toPointF());
+    p_testShip->updateGame(mSecElapsed);
+    p_testShip2->updateGame(mSecElapsed);
     if(p_testShip != nullptr)
         p_mainView->centerOn(p_testShip->pos());
-    //qDebug()<<QString("Pos: %1, %2").arg(p_testShip->x()).arg(p_testShip->y());
-    p_mainTimer->blockSignals(false);
-
 }
 
 void Game::keyPressEvent(QKeyEvent *event)
@@ -74,6 +71,7 @@ Game::Game(QWidget *parent) : QWidget(parent)
 
     p_mainTimer = new QTimer(this);
     p_mainView = new QGraphicsView(this);
+
 
     p_testShip = new GameShip(p_mainScene);
     p_testShip2 = new GameShip(p_mainScene);

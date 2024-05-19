@@ -1,37 +1,44 @@
 #include "gameship.h"
 
-GameShip::GameShip(QObject *parent) : GamePhysObject(parent)
+GameShip::GameShip(QObject *parent) : GmPhysicalObject(parent)
 {
     m_maxThrustMain = 0.08;
     m_maxThrustLat = 0.04;
-    m_maxThrustRot = 8;
+    m_maxThrustRot = 32;
 
     m_thrustMain = 0;
     m_thrustLat = 0;
     m_thrustRot = 0;
-    SetPhysix(100,50);
+
+    setMass(100);
+    setRadius(50);
 
     p_boundRect = new QRect(QPoint(-50,-30), QPoint(50,20));
-    p_grafix = new QVector<QPointF>();
-    p_grafix->append(QPointF( 20,-30));
-    p_grafix->append(QPointF( 50, 10));
-    p_grafix->append(QPointF( 20, 20));
-    p_grafix->append(QPointF(-20, 20));
-    p_grafix->append(QPointF(-50, 10));
-    p_grafix->append(QPointF(-20,-30));
-    p_grafix->append(QPointF(  0,  0));
-    p_grafix->append(QPointF( 20,-30));
-    p_grafix->append(QPointF(-20,-30));
+    QPolygonF model = QPolygonF();
+    model << QPointF( 20,-30);
+    model << QPointF( 50, 10);
+    model << QPointF( 20, 20);
+    model << QPointF(-20, 20);
+    model << QPointF(-50, 10);
+    model << QPointF(-20,-30);
+    model << QPointF(  0,  0);
+    model << QPointF( 20,-30);
+    model << QPointF(-20,-30);
+    QPen pen;
+    QBrush brush;
+    p_grafix->setPolygonAtLayer(0, &model, &pen, &brush);
+
+    m_motionType = GMOBJ_MOTION_FREE;
 
     m_input = nullptr;
 }
 
-void GameShip::UpdateGame(int ticks)
+void GameShip::updateGame(int ticks)
 {
     if(m_input != nullptr)
         UpdateInput(ticks);
     UpdateThrust(ticks);
-    GamePhysObject::UpdateGame(ticks);
+    GmPhysicalObject::updateGame(ticks);
     
 }
 
@@ -52,10 +59,10 @@ void GameShip::SetThrustRot(qreal value)
 
 void GameShip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    if(p_grafix == nullptr)
-        GamePhysObject::paint(painter, option, widget);
+    if(p_grafix->isLayerEmpty(0))
+        GmPhysicalObject::paint(painter, option, widget);
     else
-        painter->drawPolygon(*p_grafix);
+        p_grafix->drawPolygonAtLayer(0, painter);
     //QString s = QString("vel %1, %2").arg(m_velocityLinear.x()).arg(m_velocityLinear.y());
     //QString s = QString("pos %1, %2").arg(pos().x()).arg(pos().y());
 
@@ -120,7 +127,7 @@ void GameShip::UpdateInput(int ticks)
 
 void GameShip::UpdateThrust(int ticks)
 {
-    ApplyImpulseL(QVector2D(0, m_thrustMain * ticks), QPointF(0, 10));
-    ApplyImpulseL(QVector2D(m_thrustLat * ticks, 0), QPointF(0, 0));
-    ApplyImpulseRot(m_thrustRot * ticks);
+    applyImpulseL(QVector2D(0, m_thrustMain * ticks), QPointF(0, 10));
+    applyImpulseL(QVector2D(m_thrustLat * ticks, 0), QPointF(0, 0));
+    applyImpulseRot(m_thrustRot * ticks);
 }
