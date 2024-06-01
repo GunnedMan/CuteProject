@@ -1,7 +1,7 @@
-#include "game.h"
+#include "GmGame.h"
 
-
-void Game::InitLayout()
+/*
+void GmGame::InitLayout()
 {
     QGridLayout* gl = new QGridLayout(this);
     setLayout(gl);
@@ -9,7 +9,7 @@ void Game::InitLayout()
     layout()->addWidget(p_mainView);
 }
 
-void Game::InitGraphics()
+void GmGame::InitGraphics()
 {
     p_mainView->setScene(p_mainScene);
     p_mainView->setRenderHint(QPainter::Antialiasing, true);
@@ -17,19 +17,19 @@ void Game::InitGraphics()
     p_mainView->setRenderHint(QPainter::RenderHint::HighQualityAntialiasing,true);
 }
 
-void Game::InitInput()
+void GmGame::InitInput()
 {
 
 }
 
-void Game::InitTimer()
+void GmGame::InitTimer()
 {
     p_mainTimer->setInterval(1000/60);//60 fps
-    connect(p_mainTimer, &QTimer::timeout, this, &Game::Update);
+    connect(p_mainTimer, &QTimer::timeout, this, &GmGame::Update);
     p_mainTimer->start();
 }
 
-void Game::Update()
+void GmGame::Update()
 {
     //time
     quint64 currentMSec = QDateTime::currentDateTime().toMSecsSinceEpoch();
@@ -52,22 +52,22 @@ void Game::Update()
         p_mainView->centerOn(p_testShip->pos());
 }
 
-void Game::keyPressEvent(QKeyEvent *event)
+void GmGame::keyPressEvent(QKeyEvent *event)
 {
     inputHandler->KeyPressEvent(event);
 }
 
-void Game::keyReleaseEvent(QKeyEvent *event)
+void GmGame::keyReleaseEvent(QKeyEvent *event)
 {
     inputHandler->KeyReleaseEvent(event);
 }
 
-Game::Game(QWidget *parent) : QWidget(parent)
+GmGame::GmGame(QWidget *parent) : QWidget(parent)
 {
     p_mainScene = new QGraphicsScene(this);
     p_mainScene->setSceneRect(-100000, -100000, 100000*2, 100000*2);
 
-    inputHandler = new InputHandler(this);
+    inputHandler = new GmInput(this);
 
     p_mainTimer = new QTimer(this);
     p_mainView = new QGraphicsView(this);
@@ -91,7 +91,8 @@ Game::Game(QWidget *parent) : QWidget(parent)
 
 }
 
-QGraphicsView *Game::View()
+QGraphicsView *GmGame::View()
 {
     return p_mainView;
 }
+*/

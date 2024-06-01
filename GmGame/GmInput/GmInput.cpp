@@ -1,6 +1,6 @@
-#include "inputhandler.h"
+#include "GmInput.h"
 
-InputHandler::InputHandler(QObject *parent) : QObject(parent)
+GmInput::GmInput(QObject *parent) : QObject(parent)
 {
     KeyHolder keyEmpty;
     keyEmpty.key = 0;
@@ -10,7 +10,7 @@ InputHandler::InputHandler(QObject *parent) : QObject(parent)
         m_keys[i] = keyEmpty;
 }
 
-void InputHandler::KeyPressEvent(QKeyEvent *event)
+void GmInput::KeyPressEvent(QKeyEvent *event)
 {
     KeyHolder holder;
     holder.key = event->key();
@@ -34,7 +34,7 @@ void InputHandler::KeyPressEvent(QKeyEvent *event)
 
 }
 
-void InputHandler::KeyReleaseEvent(QKeyEvent *event)
+void GmInput::KeyReleaseEvent(QKeyEvent *event)
 {
     int index = GetKeyIndex(event->key());
     if(index >= 0)
@@ -43,14 +43,14 @@ void InputHandler::KeyReleaseEvent(QKeyEvent *event)
     }
 }
 
-void InputHandler::UpdateGame(int ticks)
+void GmInput::UpdateGame(int ticks)
 {
     for(int i = 0; i < MaxKeys; i++)
         if(m_keys[i].isPressed)
             m_keys[i].ticks += ticks;
 }
 
-bool InputHandler::IsKeyPressed(Qt::Key key, int *timeMSec)
+bool GmInput::IsKeyPressed(Qt::Key key, int *timeMSec)
 {
     int index = GetKeyIndex(key);
     if(index >= 0)
@@ -61,7 +61,7 @@ bool InputHandler::IsKeyPressed(Qt::Key key, int *timeMSec)
     return false;
 }
 
-int InputHandler::GetKeyIndex(int key)
+int GmInput::GetKeyIndex(int key)
 {
     for(int i = 0; i < MaxKeys; i++)
         if(m_keys[i].key == key)
@@ -69,7 +69,7 @@ int InputHandler::GetKeyIndex(int key)
     return -1;
 }
 
-int InputHandler::GetFreeIndex()
+int GmInput::GetFreeIndex()
 {
     for(int i = 0; i < MaxKeys; i++)
         if(!m_keys[i].isPressed)
@@ -78,7 +78,7 @@ int InputHandler::GetFreeIndex()
 }
 
 
-int InputHandler::GetLongestIndex()
+int GmInput::GetLongestIndex()
 {
     int maxTicks = 0;
     int maxIndex = 0;

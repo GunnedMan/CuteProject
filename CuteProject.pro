@@ -16,20 +16,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    game.cpp \
-    gameship.cpp \
-    gmgrafix.cpp \
-    gmphysicalobject.cpp \
-    inputhandler.cpp \
+    GmGame/GmDatabase/GmDatabase.cpp \
+    GmGame/GmGame.cpp \
+    GmGame/GmGameUpdateTimer.cpp \
+    GmGame/GmGrafix/GmGameScene.cpp \
+    GmGame/GmGrafix/GmGrafix.cpp \
+    GmGame/GmInput/GmInput.cpp \
+    GmGame/GmPhysObject/GmPhysObject.cpp \
+    GmGame/GmPhysObject/GmPlayerShip.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
-    game.h \
-    gameship.h \
-    gmgrafix.h \
-    gmphysicalobject.h \
-    inputhandler.h \
+    GmGame/GmDatabase/GmDatabase.h \
+    GmGame/GmGame.h \
+    GmGame/GmGameUpdateTimer.h \
+    GmGame/GmGrafix/GmGameScene.h \
+    GmGame/GmGrafix/GmGrafix.h \
+    GmGame/GmInput/GmInput.h \
+    GmGame/GmPhysObject/GmPhysObject.h \
+    GmGame/GmPhysObject/GmPlayerShip.h \
     mainwindow.h
 
 FORMS += \
@@ -41,3 +47,6 @@ QMAKE_LFLAGS += -static
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    gmGrafix/todo.txt

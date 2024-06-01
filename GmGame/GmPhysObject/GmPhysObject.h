@@ -1,5 +1,5 @@
-#ifndef GAMEPHYSOBJECT_H
-#define GAMEPHYSOBJECT_H
+#ifndef GMPHYSOBJECT_H
+#define GMPHYSOBJECT_H
 
 
 #include <QObject>
@@ -13,9 +13,9 @@
 #include <QtDebug>
 
 
-#include <gmgrafix.h>
+#include <GmGame/GmGrafix/GmGrafix.h>
 
-class GmPhysicalObject : public QObject, public QGraphicsItem
+class GmPhysObject : public QObject, public QGraphicsItem
 {
 public:
 
@@ -57,7 +57,8 @@ public:
 
     Q_OBJECT
 public:
-    explicit GmPhysicalObject(QObject *parent = nullptr);
+    explicit GmPhysObject(QObject *parent = nullptr);
+    virtual void setDefName(QString* name);
     virtual void updateGame(int ticks = 1);
     virtual void setRadius(qreal radius);
     virtual void setMass(qreal mass);
@@ -73,6 +74,7 @@ public:
     virtual void Destroy();
     virtual void Destruct();
 
+    virtual QString defName() const;
     virtual GmObjectType gmType() const;
     virtual GmObjectState gmState() const;
     virtual int health() const;
@@ -108,6 +110,7 @@ protected:
     GmGrafix* p_grafix;
 
     //game
+    QString m_defName;
     GmObjectType m_objectType = GMOBJ_TYPE_NONE;
     GmObjectState m_objectState = GMOBJ_STATE_ALIVE;
     int m_ticksToLive = GMOBJ_TTL_ETERNAL;

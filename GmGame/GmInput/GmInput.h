@@ -1,5 +1,5 @@
-#ifndef INPUTHANDLER_H
-#define INPUTHANDLER_H
+#ifndef GMINPUT_H
+#define GMINPUT_H
 
 #include <QKeyEvent>
 #include <QObject>
@@ -11,11 +11,11 @@ struct KeyHolder{
 };
 
 
-class InputHandler : public QObject
+class GmInput : public QObject
 {
     Q_OBJECT
 public:
-    explicit InputHandler(QObject *parent = nullptr);
+    explicit GmInput(QObject *parent = nullptr);
     bool IsKeyPressed(Qt::Key key, int* timeMSec);
     void KeyPressEvent(QKeyEvent *event);
     void KeyReleaseEvent(QKeyEvent *event);

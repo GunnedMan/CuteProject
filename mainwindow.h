@@ -2,9 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <game.h>
 #include <QLayout>
 #include <QTimer>
+
+#include <GmGame/GmGame.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -20,7 +21,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    Game* p_game;
+    GmGame* p_game;
 
 public slots:
 

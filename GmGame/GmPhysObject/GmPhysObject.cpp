@@ -1,35 +1,40 @@
-#include "gmphysicalobject.h"
+#include "GmPhysObject.h"
 
 
-GmPhysicalObject::GmPhysicalObject(QObject *parent) : QObject(parent)
+GmPhysObject::GmPhysObject(QObject *parent) : QObject(parent)
 {
     m_velocityLinear = QVector2D(0,0);
     m_velocityAngular = 0;
     SetRotationalMass();
 
+    m_defName = "";
     p_grafix = new GmGrafix(this);
     p_boundRect = new QRect(p_grafix->getPolygonAtLayer(GmGrafix::DummyLayer).boundingRect().toRect());
 }
 
-void GmPhysicalObject::updateGame(int ticks)
+void GmPhysObject::setDefName(QString *name)
 {
-    //
+    m_defName = QString(*name);
+}
+
+void GmPhysObject::updateGame(int ticks)
+{
     updateState(ticks);
     updatePhysics(ticks);
 
 }
 
-QVector2D GmPhysicalObject::velocityLin() const
+QVector2D GmPhysObject::velocityLin() const
 {
     return m_velocityLinear;
 }
 
-qreal GmPhysicalObject::velocityAng() const
+qreal GmPhysObject::velocityAng() const
 {
     return m_velocityAngular;
 }
 
-void GmPhysicalObject::applyImpulseG(QVector2D impulse, QPointF globalPoint)
+void GmPhysObject::applyImpulseG(QVector2D impulse, QPointF globalPoint)
 {
     applyImpulseLin(impulse);
     QVector2D vectorToLocalCenter = QVector2D(globalPoint - pos());
@@ -38,85 +43,90 @@ void GmPhysicalObject::applyImpulseG(QVector2D impulse, QPointF globalPoint)
     //qDebug()<<QString("impulse: %1, %2").arg(impulse.x()).arg(impulse.y());
 }
 
-void GmPhysicalObject::applyImpulseL(QVector2D impulse, QPointF localPoint)
+void GmPhysObject::applyImpulseL(QVector2D impulse, QPointF localPoint)
 {
     QVector2D mappedImpulse = QVector2D(mapToScene(impulse.toPointF()) - pos());
     //qDebug()<<QString("mappedImpulse: %1, %2").arg(mappedImpulse.x()).arg(mappedImpulse.y());
     applyImpulseG(mappedImpulse, mapToScene(localPoint));
 }
 
-void GmPhysicalObject::applyImpulseLin(QVector2D impulse)
+void GmPhysObject::applyImpulseLin(QVector2D impulse)
 {
     if(m_mass == 0)
         return;
     m_velocityLinear += impulse / m_mass;
 }
 
-void GmPhysicalObject::applyImpulseRot(qreal impulse)
+void GmPhysObject::applyImpulseRot(qreal impulse)
 {
     if(m_massRotational == 0)
         return;
     m_velocityAngular += impulse / m_massRotational;
 }
 
-void GmPhysicalObject::setEnergyInternal(qreal energy)
+void GmPhysObject::setEnergyInternal(qreal energy)
 {
     if(energy >= 0)
         m_energyInternal = energy;
 }
 
-void GmPhysicalObject::Damage(int value)
+void GmPhysObject::Damage(int value)
 {
     m_health -= value;
 }
 
-void GmPhysicalObject::Heal(int value)
+void GmPhysObject::Heal(int value)
 {
     m_health += value;
 }
 
-void GmPhysicalObject::Destroy()
+void GmPhysObject::Destroy()
 {
     m_health = 0;
     m_objectState = GMOBJ_STATE_DEAD;
 }
 
-void GmPhysicalObject::Destruct()
+void GmPhysObject::Destruct()
 {
     m_health = 0;
 }
 
-GmPhysicalObject::GmObjectType GmPhysicalObject::gmType() const
+QString GmPhysObject::defName() const
+{
+    return m_defName;
+}
+
+GmPhysObject::GmObjectType GmPhysObject::gmType() const
 {
     return m_objectType;
 }
 
-GmPhysicalObject::GmObjectState GmPhysicalObject::gmState() const
+GmPhysObject::GmObjectState GmPhysObject::gmState() const
 {
     return m_objectState;
 }
 
-int GmPhysicalObject::health() const
+int GmPhysObject::health() const
 {
     return m_health;
 }
 
-int GmPhysicalObject::ticksToLive() const
+int GmPhysObject::ticksToLive() const
 {
     return m_ticksToLive;
 }
 
-qreal GmPhysicalObject::energyKinetic() const
+qreal GmPhysObject::energyKinetic() const
 {
     return m_mass * m_velocityLinear.lengthSquared() / 2;
 }
 
-qreal GmPhysicalObject::mass() const
+qreal GmPhysObject::mass() const
 {
     return  m_mass;
 }
 
-void GmPhysicalObject::setMass(qreal mass)
+void GmPhysObject::setMass(qreal mass)
 {
     if(mass >= 0)
     {
@@ -125,17 +135,17 @@ void GmPhysicalObject::setMass(qreal mass)
     }
 }
 
-qreal GmPhysicalObject::energyInternal() const
+qreal GmPhysObject::energyInternal() const
 {
     return  m_energyInternal;
 }
 
-qreal GmPhysicalObject::radius() const
+qreal GmPhysObject::radius() const
 {
     return m_radius;
 }
 
-void GmPhysicalObject::setRadius(qreal radius)
+void GmPhysObject::setRadius(qreal radius)
 {
     if(radius >= 0)
     {
@@ -144,7 +154,7 @@ void GmPhysicalObject::setRadius(qreal radius)
     }
 }
 
-void GmPhysicalObject::setVelocityLin(QVector2D velocity)
+void GmPhysObject::setVelocityLin(QVector2D velocity)
 {
     if(velocity.lengthSquared() < MaxVelocityLinearSquared)
         m_velocityLinear = velocity;
@@ -152,7 +162,7 @@ void GmPhysicalObject::setVelocityLin(QVector2D velocity)
         m_velocityLinear = MaxVelocityLinear * velocity.normalized();
 }
 
-void GmPhysicalObject::setVelocityAng(qreal velocity)
+void GmPhysObject::setVelocityAng(qreal velocity)
 {
     if(velocity < abs(MaxVelocityRotational))
         m_velocityAngular = velocity;
@@ -162,24 +172,24 @@ void GmPhysicalObject::setVelocityAng(qreal velocity)
         m_velocityAngular = MaxVelocityRotational;
 }
 
-QRectF GmPhysicalObject::boundingRect() const
+QRectF GmPhysObject::boundingRect() const
 {
     return *p_boundRect;
 }
 
-void GmPhysicalObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GmPhysObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
     Q_UNUSED(widget);
     p_grafix->drawPolygonAtLayer(GmGrafix::DummyLayer, painter);
 }
 
-void GmPhysicalObject::SetRotationalMass(qreal mass, qreal radius)
+void GmPhysObject::SetRotationalMass(qreal mass, qreal radius)
 {
     m_massRotational = mass * radius * radius * 0.5; //cylinder formula
 }
 
-void GmPhysicalObject::updateState(int ticks)
+void GmPhysObject::updateState(int ticks)
 {
     switch (m_objectState){
     case GMOBJ_STATE_ALIVE:
@@ -209,7 +219,7 @@ void GmPhysicalObject::updateState(int ticks)
     }
 }
 
-void GmPhysicalObject::updatePhysics(int ticks)
+void GmPhysObject::updatePhysics(int ticks)
 {
     if(m_objectState == GMOBJ_STATE_DEAD)
         return;
@@ -231,12 +241,12 @@ void GmPhysicalObject::updatePhysics(int ticks)
     setRotation(rotation()+m_velocityAngular * ticks);
 }
 
-void GmPhysicalObject::onDyingState()
+void GmPhysObject::onDyingState()
 {
 
 }
 
-void GmPhysicalObject::onDeadState()
+void GmPhysObject::onDeadState()
 {
 
 }

@@ -1,6 +1,6 @@
-#include "gameship.h"
+#include "GmPlayerShip.h"
 
-GameShip::GameShip(QObject *parent) : GmPhysicalObject(parent)
+GmPlayerShip::GmPlayerShip(QObject *parent) : GmPhysObject(parent)
 {
     m_maxThrustMain = 0.08;
     m_maxThrustLat = 0.04;
@@ -33,34 +33,34 @@ GameShip::GameShip(QObject *parent) : GmPhysicalObject(parent)
     m_input = nullptr;
 }
 
-void GameShip::updateGame(int ticks)
+void GmPlayerShip::updateGame(int ticks)
 {
     if(m_input != nullptr)
         UpdateInput(ticks);
     UpdateThrust(ticks);
-    GmPhysicalObject::updateGame(ticks);
+    GmPhysObject::updateGame(ticks);
     
 }
 
-void GameShip::SetThrustMain(qreal value)
+void GmPlayerShip::SetThrustMain(double value)
 {
     m_thrustMain = value;
 }
 
-void GameShip::SetThrustLat(qreal value)
+void GmPlayerShip::SetThrustLat(double value)
 {
     m_thrustLat = value;
 }
 
-void GameShip::SetThrustRot(qreal value)
+void GmPlayerShip::SetThrustRot(double value)
 {
     m_thrustRot = value;
 }
 
-void GameShip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void GmPlayerShip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     if(p_grafix->isLayerEmpty(0))
-        GmPhysicalObject::paint(painter, option, widget);
+        GmPhysObject::paint(painter, option, widget);
     else
         p_grafix->drawPolygonAtLayer(0, painter);
     //QString s = QString("vel %1, %2").arg(m_velocityLinear.x()).arg(m_velocityLinear.y());
@@ -70,12 +70,12 @@ void GameShip::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, 
 
 }
 
-void GameShip::SetInput(InputHandler *input)
+void GmPlayerShip::SetInput(GmInput *input)
 {
     m_input = input;
 }
 
-void GameShip::UpdateInput(int ticks)
+void GmPlayerShip::UpdateInput(int ticks)
 {
     int pressedTicks;
     if(m_input->IsKeyPressed(Qt::Key::Key_W, &pressedTicks))
@@ -125,7 +125,7 @@ void GameShip::UpdateInput(int ticks)
 
 }
 
-void GameShip::UpdateThrust(int ticks)
+void GmPlayerShip::UpdateThrust(int ticks)
 {
     applyImpulseL(QVector2D(0, m_thrustMain * ticks), QPointF(0, 10));
     applyImpulseL(QVector2D(m_thrustLat * ticks, 0), QPointF(0, 0));

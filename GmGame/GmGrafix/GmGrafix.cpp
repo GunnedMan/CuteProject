@@ -1,4 +1,4 @@
-#include "gmgrafix.h"
+#include "GmGrafix.h"
 
 GmGrafix::GmGrafix(QObject *parent) : QObject(parent)
 {
