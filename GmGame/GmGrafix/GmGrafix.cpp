@@ -15,6 +15,35 @@ QPolygonF GmGrafix::getPolygonAtLayer(int layer) const
     return m_polygons[layer];
 }
 
+void GmGrafix::draw(QPainter *painter, const GmGrafix::DrawOptions options) const
+{
+    painter->save();
+    for(int i = 0; i < MaxLayers; i++)
+        drawPolygonAtLayer(i, painter);
+    if(options != DRAWOPT_NONE)
+    {
+        QBrush br;
+        painter->setBrush(br);
+        if(options == DRAWOPT_COLLPOLY)
+        {
+            painter->setPen(Qt::red);
+            painter->drawPolygon(m_collisionPolygon);
+        }
+        if(options == DRAWOPT_BOUNDRECT)
+        {
+            painter->setPen(Qt::blue);
+            painter->drawRect(m_boundRect);
+        }
+        if(options == DRAWOPT_COLLRADIUS)
+        {
+            painter->setPen(Qt::yellow);
+            painter->drawArc(0,0,m_maxCollisionRadius * 2, m_maxCollisionRadius * 2, 0, 360);
+        }
+
+    }
+    painter->restore();
+}
+
 bool GmGrafix::isLayerEmpty(int layer) const
 {
     return m_polygons[layer].length() == 0;

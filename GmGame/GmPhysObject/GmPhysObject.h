@@ -58,7 +58,7 @@ public:
     Q_OBJECT
 public:
     explicit GmPhysObject(QObject *parent = nullptr);
-    virtual void copyFrom(const GmPhysObject* other);
+    void copyFrom(const GmPhysObject* other);
     virtual void setDefName(QString* name);
     virtual void updateGame(int millis = 1);
     virtual void setRadius(qreal radius);

@@ -27,34 +27,7 @@ public:
     ~GmGrafix();
 
     QPolygonF getPolygonAtLayer(int layer) const;
-    inline void draw(QPainter *painter, const DrawOptions options) const
-    {
-        painter->save();
-        for(int i = 0; i < MaxLayers; i++)
-            drawPolygonAtLayer(i, painter);
-        if(options != DRAWOPT_NONE)
-        {
-            QBrush br;
-            painter->setBrush(br);
-            if(options == DRAWOPT_COLLPOLY)
-            {
-                painter->setPen(Qt::red);
-                painter->drawPolygon(m_collisionPolygon);
-            }
-            if(options == DRAWOPT_BOUNDRECT)
-            {
-                painter->setPen(Qt::blue);
-                painter->drawRect(m_boundRect);
-            }
-            if(options == DRAWOPT_COLLRADIUS)
-            {
-                painter->setPen(Qt::yellow);
-                painter->drawArc(0,0,)
-            }
-            
-        }
-        painter->restore();
-    }
+    inline void draw(QPainter *painter, const DrawOptions options) const;
     void setPolygonAtLayer(int layer, const QPolygonF* polygon, const QPen* pen, const QBrush* brush);
     void clear();
 
