@@ -20,10 +20,13 @@ SOURCES += \
     GmGame/GmGame.cpp \
     GmGame/GmGameUpdateTimer.cpp \
     GmGame/GmGrafix/GmGameScene.cpp \
+    GmGame/GmGrafix/GmGameScreen.cpp \
     GmGame/GmGrafix/GmGrafix.cpp \
+    GmGame/GmGrafix/GmUiIndicatorBar.cpp \
     GmGame/GmInput/GmInput.cpp \
     GmGame/GmPhysObject/GmPhysObject.cpp \
     GmGame/GmPhysObject/GmPlayerShip.cpp \
+    GmGame/GmUtility.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -32,10 +35,13 @@ HEADERS += \
     GmGame/GmGame.h \
     GmGame/GmGameUpdateTimer.h \
     GmGame/GmGrafix/GmGameScene.h \
+    GmGame/GmGrafix/GmGameScreen.h \
     GmGame/GmGrafix/GmGrafix.h \
+    GmGame/GmGrafix/GmUiIndicatorBar.h \
     GmGame/GmInput/GmInput.h \
     GmGame/GmPhysObject/GmPhysObject.h \
     GmGame/GmPhysObject/GmPlayerShip.h \
+    GmGame/GmUtility.h \
     mainwindow.h
 
 FORMS += \

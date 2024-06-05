@@ -5,11 +5,31 @@ GmPhysObject::GmPhysObject(QObject *parent) : QObject(parent)
 {
     m_velocityLinear = QVector2D(0,0);
     m_velocityAngular = 0;
-    SetRotationalMass();
+    setRotationalMass();
 
     m_defName = "";
     p_grafix = new GmGrafix(this);
-    p_boundRect = new QRect(p_grafix->getPolygonAtLayer(GmGrafix::DummyLayer).boundingRect().toRect());
+}
+
+void GmPhysObject::copyFrom(const GmPhysObject* other)
+{
+    setParent(other->parent());
+    p_grafix = other->p_grafix;
+    m_defName = other->m_defName;
+    m_objectType = other->m_objectType;
+    m_objectState = other->m_objectState;
+    m_millisToLive = other->m_millisToLive;
+    m_mass = other->m_mass;
+    m_massRadius = other->m_massRadius;
+    m_massRotational = other->m_massRotational;
+    m_energyInternal = other->m_energyInternal;
+    m_health = other->m_health;
+
+    setX(other->x());
+    setY(other->y());
+    m_velocityLinear = QVector2D(0,0);
+    m_velocityAngular = 0;
+    m_motionType = other->m_motionType;
 }
 
 void GmPhysObject::setDefName(QString *name)
@@ -17,10 +37,10 @@ void GmPhysObject::setDefName(QString *name)
     m_defName = QString(*name);
 }
 
-void GmPhysObject::updateGame(int ticks)
+void GmPhysObject::updateGame(int millis)
 {
-    updateState(ticks);
-    updatePhysics(ticks);
+    updateState(millis);
+    updatePhysics(millis);
 
 }
 
@@ -70,23 +90,23 @@ void GmPhysObject::setEnergyInternal(qreal energy)
         m_energyInternal = energy;
 }
 
-void GmPhysObject::Damage(int value)
+void GmPhysObject::damage(int value)
 {
     m_health -= value;
 }
 
-void GmPhysObject::Heal(int value)
+void GmPhysObject::heal(int value)
 {
     m_health += value;
 }
 
-void GmPhysObject::Destroy()
+void GmPhysObject::destroy()
 {
     m_health = 0;
     m_objectState = GMOBJ_STATE_DEAD;
 }
 
-void GmPhysObject::Destruct()
+void GmPhysObject::destruct()
 {
     m_health = 0;
 }
@@ -113,7 +133,7 @@ int GmPhysObject::health() const
 
 int GmPhysObject::ticksToLive() const
 {
-    return m_ticksToLive;
+    return m_millisToLive;
 }
 
 qreal GmPhysObject::energyKinetic() const
@@ -131,7 +151,7 @@ void GmPhysObject::setMass(qreal mass)
     if(mass >= 0)
     {
         m_mass = mass;
-        SetRotationalMass(mass, m_radius);
+        setRotationalMass(mass, m_massRadius);
     }
 }
 
@@ -142,15 +162,15 @@ qreal GmPhysObject::energyInternal() const
 
 qreal GmPhysObject::radius() const
 {
-    return m_radius;
+    return m_massRadius;
 }
 
 void GmPhysObject::setRadius(qreal radius)
 {
     if(radius >= 0)
     {
-        m_radius = radius;
-        SetRotationalMass(m_mass, m_radius);
+        m_massRadius = radius;
+        setRotationalMass(m_mass, m_massRadius);
     }
 }
 
@@ -174,7 +194,7 @@ void GmPhysObject::setVelocityAng(qreal velocity)
 
 QRectF GmPhysObject::boundingRect() const
 {
-    return *p_boundRect;
+    return *p_boundRect; //TODO
 }
 
 void GmPhysObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -184,23 +204,23 @@ void GmPhysObject::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     p_grafix->drawPolygonAtLayer(GmGrafix::DummyLayer, painter);
 }
 
-void GmPhysObject::SetRotationalMass(qreal mass, qreal radius)
+void GmPhysObject::setRotationalMass(qreal mass, qreal radius)
 {
     m_massRotational = mass * radius * radius * 0.5; //cylinder formula
 }
 
-void GmPhysObject::updateState(int ticks)
+void GmPhysObject::updateState(int millis)
 {
     switch (m_objectState){
     case GMOBJ_STATE_ALIVE:
     {
-        if(m_ticksToLive <= 0 || (m_health <= 0 && m_health != GMOBJ_HEALTH_UNDESTRUCTIBLE))
+        if(m_millisToLive <= 0 || (m_health <= 0 && m_health != GMOBJ_HEALTH_UNDESTRUCTIBLE))
         {
             m_objectState = GMOBJ_STATE_DYING;
             onDyingState();
         }
-        if(m_ticksToLive != GMOBJ_TTL_ETERNAL)
-            m_ticksToLive -= ticks;
+        if(m_millisToLive != GMOBJ_TTL_ETERNAL)
+            m_millisToLive -= millis;
     }
         break;
 
@@ -219,7 +239,7 @@ void GmPhysObject::updateState(int ticks)
     }
 }
 
-void GmPhysObject::updatePhysics(int ticks)
+void GmPhysObject::updatePhysics(int millis)
 {
     if(m_objectState == GMOBJ_STATE_DEAD)
         return;
@@ -236,9 +256,9 @@ void GmPhysObject::updatePhysics(int ticks)
     if(m_velocityLinear.lengthSquared() > MaxVelocityLinearSquared)
         m_velocityLinear = m_velocityLinear.normalized() * MaxVelocityLinearSquared;
     QPointF p = pos();
-    p += m_velocityLinear.toPointF() * ticks;
+    p += m_velocityLinear.toPointF() * millis;
     setPos(p);
-    setRotation(rotation()+m_velocityAngular * ticks);
+    setRotation(rotation()+m_velocityAngular * millis);
 }
 
 void GmPhysObject::onDyingState()

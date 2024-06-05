@@ -58,8 +58,9 @@ public:
     Q_OBJECT
 public:
     explicit GmPhysObject(QObject *parent = nullptr);
+    virtual void copyFrom(const GmPhysObject* other);
     virtual void setDefName(QString* name);
-    virtual void updateGame(int ticks = 1);
+    virtual void updateGame(int millis = 1);
     virtual void setRadius(qreal radius);
     virtual void setMass(qreal mass);
     virtual void setVelocityLin(QVector2D velocity);
@@ -69,10 +70,10 @@ public:
     virtual void applyImpulseLin(QVector2D force);
     virtual void applyImpulseRot(qreal force);
     virtual void setEnergyInternal(qreal energy);
-    virtual void Damage(int value);
-    virtual void Heal(int value);
-    virtual void Destroy();
-    virtual void Destruct();
+    virtual void damage(int value);
+    virtual void heal(int value);
+    virtual void destroy();
+    virtual void destruct();
 
     virtual QString defName() const;
     virtual GmObjectType gmType() const;
@@ -90,7 +91,7 @@ public:
 protected:
     virtual QRectF boundingRect() const;
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    virtual void SetRotationalMass(qreal mass = 10, qreal radius = 10);
+    virtual void setRotationalMass(qreal mass = 10, qreal radius = 10);
     virtual void updateState(int ticks = 1);
     virtual void updatePhysics(int ticks = 1);
     virtual void onDyingState();
@@ -106,21 +107,22 @@ protected:
     const qreal MinVelocitySquared = MinVelocity * MinVelocity;
 
     //QGraphicsItem
-    QRect* p_boundRect;
     GmGrafix* p_grafix;
 
     //game
     QString m_defName;
+    QString m_name;
     GmObjectType m_objectType = GMOBJ_TYPE_NONE;
     GmObjectState m_objectState = GMOBJ_STATE_ALIVE;
-    int m_ticksToLive = GMOBJ_TTL_ETERNAL;
+    int m_millisToLive = GMOBJ_TTL_ETERNAL;
     //physical
     qreal m_mass = 0;
-    qreal m_radius = 0;
+    qreal m_massRadius = 0;
     qreal m_massRotational = 0;
+    GmObjectMotion m_motionType = GMOBJ_MOTION_FREE;
+    
     QVector2D m_velocityLinear = QVector2D(0,0);
     qreal m_velocityAngular = 0;
-    GmObjectMotion m_motionType = GMOBJ_MOTION_FREE;
 
     //
     qreal m_energyInternal = 0;

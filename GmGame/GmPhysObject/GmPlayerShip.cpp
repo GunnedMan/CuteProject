@@ -13,7 +13,6 @@ GmPlayerShip::GmPlayerShip(QObject *parent) : GmPhysObject(parent)
     setMass(100);
     setRadius(50);
 
-    p_boundRect = new QRect(QPoint(-50,-30), QPoint(50,20));
     QPolygonF model = QPolygonF();
     model << QPointF( 20,-30);
     model << QPointF( 50, 10);
@@ -31,6 +30,14 @@ GmPlayerShip::GmPlayerShip(QObject *parent) : GmPhysObject(parent)
     m_motionType = GMOBJ_MOTION_FREE;
 
     m_input = nullptr;
+}
+
+void GmPlayerShip::copyFrom(const GmPlayerShip* other)
+{
+    GmPhysObject::copyFrom(other);
+    m_maxThrustMain = other->m_maxThrustMain;
+    m_maxThrustLat = other->m_maxThrustLat;
+    m_maxThrustRot = other->m_maxThrustRot;
 }
 
 void GmPlayerShip::updateGame(int ticks)

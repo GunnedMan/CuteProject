@@ -20,20 +20,18 @@ bool GmGrafix::isLayerEmpty(int layer) const
     return m_polygons[layer].length() == 0;
 }
 
-void GmGrafix::drawPolygonAtLayer(int layer, QPainter *painter) const
+
+
+inline void GmGrafix::drawPolygonAtLayer(int layer, QPainter *painter) const
 {
-    if(layer >= GMGRAFIX_LAYERS)
-        return;
-    painter->save();
     painter->setPen(m_pens[layer]);
     painter->setBrush(m_brushes[layer]);
     painter->drawPolygon(m_polygons[layer]);
-    painter->restore();
 }
 
 void GmGrafix::setPolygonAtLayer(int layer, const QPolygonF *polygon, const QPen *pen, const QBrush *brush)
 {
-    if(layer >= GMGRAFIX_LAYERS)
+    if(layer >= MaxLayers)
         return;
     m_polygons[layer] = *polygon;
     m_pens[layer] = *pen;
@@ -53,8 +51,8 @@ void GmGrafix::clear()
 
 void GmGrafix::SetDummyGrafix()
 {
-    m_polygons[GMGRAFIX_DUMMYLAYER].clear();
-    m_polygons[GMGRAFIX_DUMMYLAYER] << QPointF(0,0)
+    m_polygons[0].clear();
+    m_polygons[0] << QPointF(0,0)
                   << QPointF(0,10)
                   << QPointF(10,0)
                   << QPointF(0,-10)

@@ -12,9 +12,10 @@
 class GmPlayerShip : public GmPhysObject
 {
     Q_OBJECT
-
+    
 public:
     explicit GmPlayerShip(QObject *parent = nullptr);
+    void copyFrom(const GmPlayerShip* other);
     void updateGame(int ticks = 1) override;
     void SetThrustMain(double value);
     void SetThrustLat(double value);
