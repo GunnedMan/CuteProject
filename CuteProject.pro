@@ -21,7 +21,7 @@ SOURCES += \
     GmGame/GmGameUpdateTimer.cpp \
     GmGame/GmGrafix/GmGameScene.cpp \
     GmGame/GmGrafix/GmGameScreen.cpp \
-    GmGame/GmGrafix/GmGrafix.cpp \
+    GmGame/GmGrafix/GmModel2D.cpp \
     GmGame/GmGrafix/GmUiIndicatorBar.cpp \
     GmGame/GmInput/GmInput.cpp \
     GmGame/GmPhysObject/GmPhysObject.cpp \
@@ -36,7 +36,7 @@ HEADERS += \
     GmGame/GmGameUpdateTimer.h \
     GmGame/GmGrafix/GmGameScene.h \
     GmGame/GmGrafix/GmGameScreen.h \
-    GmGame/GmGrafix/GmGrafix.h \
+    GmGame/GmGrafix/GmModel2D.h \
     GmGame/GmGrafix/GmUiIndicatorBar.h \
     GmGame/GmInput/GmInput.h \
     GmGame/GmPhysObject/GmPhysObject.h \

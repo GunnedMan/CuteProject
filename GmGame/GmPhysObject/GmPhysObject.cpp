@@ -1,14 +1,14 @@
 #include "GmPhysObject.h"
 
 
-GmPhysObject::GmPhysObject(QObject *parent) : QObject(parent)
+GmPhysObject::GmPhysObject(GmGameScene *parentScene) : QObject(parentScene)
 {
     m_velocityLinear = QVector2D(0,0);
     m_velocityAngular = 0;
     setRotationalMass();
 
     m_defName = "";
-    p_grafix = new GmGrafix(this);
+    p_grafix = new GmModel2D(this);
 }
 
 void GmPhysObject::copyFrom(const GmPhysObject* other)

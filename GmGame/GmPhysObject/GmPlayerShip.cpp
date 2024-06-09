@@ -1,6 +1,6 @@
 #include "GmPlayerShip.h"
 
-GmPlayerShip::GmPlayerShip(QObject *parent) : GmPhysObject(parent)
+GmPlayerShip::GmPlayerShip(GmGameScene *parentScene) : GmPhysObject(parentScene)
 {
     m_maxThrustMain = 0.08;
     m_maxThrustLat = 0.04;

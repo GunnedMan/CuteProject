@@ -15,7 +15,7 @@ public:
 
     GmPhysObject* spawnObject(GmPhysObject* model, QPointF position, QVector2D velocity)
     {
-
+        
     }
 
 };

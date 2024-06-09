@@ -13,7 +13,8 @@
 #include <QtDebug>
 
 
-#include <GmGame/GmGrafix/GmGrafix.h>
+#include <GmGame/GmGrafix/GmModel2D.h>
+#include <GmGame/GmGrafix/GmGameScene.h>
 
 class GmPhysObject : public QObject, public QGraphicsItem
 {
@@ -57,7 +58,7 @@ public:
 
     Q_OBJECT
 public:
-    explicit GmPhysObject(QObject *parent = nullptr);
+    explicit GmPhysObject(GmGameScene *parentScene = nullptr);
     void copyFrom(const GmPhysObject* other);
     virtual void setDefName(QString* name);
     virtual void updateGame(int millis = 1);
@@ -107,7 +108,7 @@ protected:
     const qreal MinVelocitySquared = MinVelocity * MinVelocity;
 
     //QGraphicsItem
-    GmGrafix* p_grafix;
+    GmModel2D* p_grafix;
 
     //game
     QString m_defName;

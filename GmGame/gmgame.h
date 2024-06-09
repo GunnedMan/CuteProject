@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef GMGAME_H
+#define GMGAME_H
 
 #include <QWidget>
 #include <QTimer>
@@ -16,7 +16,7 @@
 
 //GM includes
 #include <GmGame/GmGameUpdateTimer.h>
-#include <GmGame/GmGrafix/GmGrafix.h>
+#include <GmGame/GmGrafix/GmModel2D.h>
 #include <GmGame/GmInput/GmInput.h>
 #include <GmGame/GmPhysObject/GmPhysObject.h>
 #include <GmGame/GmPhysObject/GmPlayerShip.h>
@@ -76,4 +76,4 @@ signals:
 
 };
 
-#endif // GAME_H
+#endif // GMGAME_H

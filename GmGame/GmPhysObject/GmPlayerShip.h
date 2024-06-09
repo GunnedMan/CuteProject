@@ -6,15 +6,16 @@
 #include <QVariantAnimation>
 #include <QEasingCurve>
 
-#include "GmPhysObject.h"
+#include <GmGame/GmPhysObject/GmPhysObject.h>
 #include <GmGame/GmInput/GmInput.h>
+#include <GmGame/GmGrafix/GmGameScene.h>
 
 class GmPlayerShip : public GmPhysObject
 {
     Q_OBJECT
     
 public:
-    explicit GmPlayerShip(QObject *parent = nullptr);
+    explicit GmPlayerShip(GmGameScene *parentScene = nullptr);
     void copyFrom(const GmPlayerShip* other);
     void updateGame(int ticks = 1) override;
     void SetThrustMain(double value);
